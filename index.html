@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>petproject011</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: var(--light-color);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .menu-items {
+            display: flex;
+            list-style: none;
+        }
+        
+        .menu-items li {
+            margin-left: 20px;
+        }
+        
+        .menu-items a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .menu-items a:hover {
+            color: var(--light-color);
+        }
+        
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 150px 0 80px;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #c0392b;
+        }
+        
+        section {
+            padding: 80px 0;
+        }
+        
+        section h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--secondary-color);
+        }
+        
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            flex: 1 1 300px;
+            max-width: 350px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .accordion {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .accordion-item {
+            background-color: white;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .accordion-header {
+            background-color: var(--primary-color);
+            padding: 15px 20px;
+            cursor: pointer;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .accordion-header::after {
+            content: '+';
+            font-size: 1.5rem;
+        }
+        
+        .accordion-header.active::after {
+            content: '-';
+        }
+        
+        .accordion-content {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease;
+        }
+        
+        .accordion-content.active {
+            padding: 20px;
+            max-height: 1000px;
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: var(--primary-color);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+        
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            right: -12px;
+            background-color: white;
+            border: 4px solid var(--accent-color);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .left {
+            left: 0;
+        }
+        
+        .right {
+            left: 50%;
+        }
+        
+        .right::after {
+            left: -12px;
+        }
+        
+        .timeline-content {
+            padding: 20px;
+            background-color: white;
+            position: relative;
+            border-radius: 6px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .timeline-content h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--secondary-color);
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        
+        .form-group textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background-color: #2980b9;
+        }
+        
+        .chart-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        pre {
+            margin: 20px 0;
+            border-radius: 5px;
+            overflow: auto;
+        }
+        
+        code {
+            font-family: 'Courier New', Courier, monospace;
+        }
+        
+        .theme-toggle {
+            margin-left: 20px;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .dark-mode {
+            background-color: #1a1a1a;
+            color: #f5f5f5;
+        }
+        
+        .dark-mode .card,
+        .dark-mode .accordion-item,
+        .dark-mode .timeline-content,
+        .dark-mode .contact-form,
+        .dark-mode .chart-container {
+            background-color: #2d2d2d;
+            color: #f5f5f5;
+        }
+        
+        .dark-mode .form-group input,
+        .dark-mode .form-group textarea {
+            background-color: #3d3d3d;
+            border-color: #444;
+            color: #f5f5f5;
+        }
+        
+        .dark-mode h2,
+        .dark-mode h3 {
+            color: var(--primary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .menu-items {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--primary-color);
+                padding: 20px;
+            }
+            
+            .menu-items.active {
+                display: flex;
+            }
+            
+            .menu-items li {
+                margin: 10px 0;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .timeline-item::after {
+                left: 18px;
+            }
+            
+            .right {
+                left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">SOA & WS Standards</div>
+                <ul class="menu-items">
+                    <li><a href="#intro">Introduction</a></li>
+                    <li><a href="#concepts">Key Concepts</a></li>
+                    <li><a href="#standards">Standards</a></li>
+                    <li><a href="#timeline">Evolution</a></li>
+                    <li><a href="#examples">Code Examples</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><button class="theme-toggle">Toggle Dark Mode</button></li>
+                </ul>
+                <button class="mobile-menu-toggle">☰</button>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Understanding Service-Oriented Architecture</h1>
+            <p>Explore the world of SOA and Web Service Standards, essential knowledge for modern distributed systems.</p>
+            <a href="#intro" class="btn">Get Started</a>
+        </div>
+    </section>
+
+    <section id="intro">
+        <div class="container">
+            <h2>Introduction to SOA</h2>
+            <div class="cards">
+                <div class="card">
+                    <h3>What is SOA?</h3>
+                    <p>Service-Oriented Architecture (SOA) is an architectural pattern that structures applications as collections of services that are:</p>
+                    <ul>
+                        <li>Loosely coupled</li>
+                        <li>Technology-agnostic</li>
+                        <li>Reusable</li>
+                        <li>Discoverable</li>
+                    </ul>
+                    <p>SOA allows organizations to build flexible, scalable systems that can adapt to changing business needs.</p>
+                </div>
+                <div class="card">
+                    <h3>Benefits of SOA</h3>
+                    <p>Implementing SOA offers numerous advantages:</p>
+                    <ul>
+                        <li>Improved interoperability between diverse systems</li>
+                        <li>Enhanced business agility</li>
+                        <li>Reduced development costs through reuse</li>
+                        <li>Better alignment between IT and business objectives</li>
+                        <li>Simplified maintenance and updates</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Web Services</h3>
+                    <p>Web Services are the primary implementation technology for SOA, providing standardized ways to expose and consume services over the web.</p>
+                    <p>They enable communication between applications regardless of platform or language, using standard protocols like HTTP, XML, SOAP, and REST.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="concepts" style="background-color: #f9f9f9;">
+        <div class="container">
+            <h2>Key SOA Concepts</h2>
+            <div class="accordion">
+                <div class="accordion-item">
+                    <div class="accordion-header">Services</div>
+                    <div class="accordion-content">
+                        <p>Services are self-contained units of functionality that represent business capabilities. They are:</p>
+                        <ul>
+                            <li><strong>Well-defined:</strong> They have clear interfaces that are separate from implementation.</li>
+                            <li><strong>Autonomous:</strong> They operate independently of other services.</li>
+                            <li><strong>Reusable:</strong> They can be used in multiple business processes.</li>
+                            <li><strong>Stateless:</strong> They maintain no client state between requests.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header">Service Contracts</div>
+                    <div class="accordion-content">
+                        <p>Service contracts define the terms of interaction with a service, including:</p>
+                        <ul>
+                            <li>Functional capabilities (what the service does)</li>
+                            <li>Data schemas (input and output formats)</li>
+                            <li>Protocol bindings (how to access the service)</li>
+                            <li>Quality of service attributes (performance, reliability)</li>
+                        </ul>
+                        <p>In web services, contracts are typically defined using WSDL (Web Services Description Language) or OpenAPI/Swagger for RESTful services.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header">Service Registry and Discovery</div>
+                    <div class="accordion-content">
+                        <p>Service registry is a centralized directory where services publish their information, enabling:</p>
+                        <ul>
+                            <li>Runtime discovery of services</li>
+                            <li>Governance and policy enforcement</li>
+                            <li>Version management</li>
+                            <li>Dependency tracking</li>
+                        </ul>
+                        <p>Examples include UDDI (Universal Description, Discovery, and Integration), Eureka, and Consul.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header">Service Composition</div>
+                    <div class="accordion-content">
+                        <p>Service composition allows building complex processes by combining multiple services:</p>
+                        <ul>
+                            <li><strong>Orchestration:</strong> Centralized control flow where a process coordinates service interactions.</li>
+                            <li><strong>Choreography:</strong> Decentralized approach where services interact directly based on rules.</li>
+                        </ul>
+                        <p>Technologies like BPEL (Business Process Execution Language) enable service orchestration in SOA.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header">Enterprise Service Bus (ESB)</div>
+                    <div class="accordion-content">
+                        <p>An ESB is a middleware architecture that manages communication between services, providing:</p>
+                        <ul>
+                            <li>Message routing and transformation</li>
+                            <li>Protocol conversion</li>
+                            <li>Service mediation</li>
+                            <li>Security enforcement</li>
+                            <li>Monitoring and logging</li>
+                        </ul>
+                        <p>ESBs reduce point-to-point integrations and create a more manageable service landscape.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="standards">
+        <div class="container">
+            <h2>Web Service Standards</h2>
+            <div class="cards">
+                <div class="card">
+                    <h3>SOAP</h3>
+                    <p>Simple Object Access Protocol (SOAP) is an XML-based messaging protocol for exchanging structured information in web services.</p>
+                    <p>Key characteristics:</p>
+                    <ul>
+                        <li>Platform and language independent</li>
+                        <li>Works with various transport protocols (HTTP, SMTP, etc.)</li>
+                        <li>Built-in error handling</li>
+                        <li>Extensibility through WS-* standards</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>WSDL</h3>
+                    <p>Web Services Description Language (WSDL) is an XML format for describing web services as collections of endpoints that operate on messages.</p>
+                    <p>A WSDL document defines:</p>
+                    <ul>
+                        <li>Service interfaces and operations</li>
+                        <li>Message formats</li>
+                        <li>Transport protocol bindings</li>
+                        <li>Service endpoint locations</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>WS-* Standards</h3>
+                    <p>WS-* comprises a family of specifications that extend core web services functionality:</p>
+                    <ul>
+                        <li><strong>WS-Security:</strong> Message-level security</li>
+                        <li><strong>WS-ReliableMessaging:</strong> Guaranteed message delivery</li>
+                        <li><strong>WS-Addressing:</strong> Transport-neutral addressing</li>
+                        <li><strong>WS-Policy:</strong> Service policy expressions</li>
+                        <li><strong>WS-BPEL:</strong> Business process orchestration</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>REST</h3>
+                    <p>Representational State Transfer (REST) is an architectural style that uses HTTP methods for service interactions.</p>
+                    <p>RESTful principles:</p>
+                    <ul>
+                        <li>Stateless client-server communication</li>
+                        <li>Uniform interface (resources with URLs)</li>
+                        <li>Cacheable responses</li>
+                        <li>Layered system architecture</li>
+                        <li>Code-on-demand (optional)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>OpenAPI/Swagger</h3>
+                    <p>OpenAPI (formerly Swagger) is a specification for RESTful APIs that:</p>
+                    <ul>
+                        <li>Describes API resources and operations</li>
+                        <li>Documents request/response formats</li>
+                        <li>Enables automatic code generation</li>
+                        <li>Creates interactive API documentation</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>JSON & XML</h3>
+                    <p>Data exchange formats for web services:</p>
+                    <ul>
+                        <li><strong>XML:</strong> Extensible Markup Language, used primarily in SOAP services</li>
+                        <li><strong>JSON:</strong> JavaScript Object Notation, lightweight format commonly used in RESTful services</li>
+                        <li><strong>Schema standards:</strong> XSD, JSON Schema for validating data</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="timeline" style="background-color: #f9f9f9;">
+        <div class="container">
+            <h2>Evolution of Web Service Standards</h2>
+            <div class="timeline">
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <h3>1999-2000</h3>
+                        <p>SOAP 1.0 and 1.1 specifications released, introducing a standardized messaging format for web services.</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <h3>2001</h3>
+                        <p>WSDL 1.1 published, providing a standard way to describe web service interfaces.</p>
+                        <p>UDDI (Universal Description, Discovery, and Integration) introduced for service discovery.</p>
+                    </div>
+                </div>
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <h3>2002-2004</h3>
+                        <p>WS-* specifications emerge, including WS-Security, WS-ReliableMessaging, and WS-Addressing.</p>
+                        <p>SOA as an architectural approach gains significant traction in enterprise environments.</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <h3>2005-2007</h3>
+                        <p>SOAP 1.2 becomes a W3C Recommendation.</p>
+                        <p>WS-BPEL 2.0 released, enabling service orchestration.</p>
+                        <p>RESTful web services become increasingly popular as an alternative to SOAP.</p>
+                    </div>
+                </div>
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <h3>2008-2011</h3>
+                        <p>WSDL 2.0 becomes a W3C Recommendation.</p>
+                        <p>Enterprise Service Bus (ESB) implementations mature.</p>
+                        <p>JSON gains widespread adoption for web service data exchange.</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <h3>2012-2015</h3>
+                        <p>Swagger (later OpenAPI) specification created for RESTful API documentation.</p>
+                        <p>Microservices architecture emerges as an evolution of SOA principles.</p>
+                    </div>
+                </div>
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <h3>2016-Present</h3>
+                        <p>OpenAPI 3.0 released, standardizing REST API descriptions.</p>
+                        <p>Growth of API gateways and service meshes for modern service management.</p>
+                        <p>gRPC and GraphQL offer alternatives to traditional web service approaches.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="examples">
+        <div class="container">
+            <h2>Code Examples</h2>
+            <div class="chart-container">
+                <h3>SOAP Message Example</h3>
+                <pre><code class="language-xml">&lt;?xml version="1.0"?&gt;
+&lt;soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+               xmlns:m="http://www.example.org/stock"&gt;
+  &lt;soap:Header&gt;
+    &lt;m:TransactionID&gt;1234&lt;/m:TransactionID&gt;
+  &lt;/soap:Header&gt;
+  &lt;soap:Body&gt;
+    &lt;m:GetStockPrice&gt;
+      &lt;m:StockName&gt;IBM&lt;/m:StockName&gt;
+    &lt;/m:GetStockPrice&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</code></pre>
+
+                <h3>WSDL Example</h3>
+                <pre><code class="language-xml">&lt;definitions name="StockQuote"
+            targetNamespace="http://example.com/stockquote.wsdl"
+            xmlns="http://schemas.xmlsoap.org/wsdl/"
+            xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+            xmlns:tns="http://example.com/stockquote.wsdl"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+
+  &lt;message name="GetStockPriceRequest"&gt;
+    &lt;part name="stockName" type="xsd:string"/&gt;
+  &lt;/message&gt;
+
+  &lt;message name="GetStockPriceResponse"&gt;
+    &lt;part name="price" type="xsd:decimal"/&gt;
+  &lt;/message&gt;
+
+  &lt;portType name="StockQuotePortType"&gt;
+    &lt;operation name="GetStockPrice"&gt;
+      &lt;input message="tns:GetStockPriceRequest"/&gt;
+      &lt;output message="tns:GetStockPriceResponse"/&gt;
+    &lt;/operation&gt;
+  &lt;/portType&gt;
+
+  &lt;binding name="StockQuoteSoapBinding" type="tns:StockQuotePortType"&gt;
+    &lt;soap:binding style="document" 
+                  transport="http://schemas.xmlsoap.org/soap/http"/&gt;
+    &lt;operation name="GetStockPrice"&gt;
+      &lt;soap:operation soapAction="http://example.com/GetStockPrice"/&gt;
+      &lt;input&gt;
+        &lt;soap:body use="literal"/&gt;
+      &lt;/input&gt;
+      &lt;output&gt;
+        &lt;soap:body use="literal"/&gt;
+      &lt;/output&gt;
+    &lt;/operation&gt;
+  &lt;/binding&gt;
+
+  &lt;service name="StockQuoteService"&gt;
+    &lt;port name="StockQuotePort" binding="tns:StockQuoteSoapBinding"&gt;
+      &lt;soap:address location="http://example.com/stockquote"/&gt;
+    &lt;/port&gt;
+  &lt;/service&gt;
+&lt;/definitions&gt;</code></pre>
+
+                <h3>RESTful API with jQuery</h3>
+                <pre><code class="language-javascript">// Consuming a RESTful API with jQuery
+$(document).ready(function() {
+    $('#getDataButton').click(function() {
+        $.ajax({
+            url: 'https://api.example.com/service',
+            type: 'GET',
+            contentType: 'application/json',
+            success: function(response) {
+                $('#result').html(JSON.stringify(response, null, 2));
+                console.log('Data retrieved successfully:', response);
+            },
+            error: function(xhr, status, error) {
+                $('#result').html('Error: ' + error);
+                console.error('Error retrieving data:', error);
+            }
+        });
+    });
+    
+    $('#postDataButton').click(function() {
+        const data = {
+            name: $('#nameInput').val(),
+            value: $('#valueInput').val()
+        };
+        
+        $.ajax({
+            url: 'https://api.example.com/service',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function(response) {
+                $('#result').html('Successfully posted data!');
+                console.log('Data posted successfully:', response);
+            },
+            error: function(xhr, status, error) {
+                $('#result').html('Error: ' + error);
+                console.error('Error posting data:', error);
+            }
+        });
+    });
+});</code></pre>
+
+                <h3>OpenAPI (Swagger) Example</h3>
+                <pre><code class="language-yaml">openapi: 3.0.0
+info:
+  title: Stock Quote API
+  description: API for retrieving stock quotes
+  version: 1.0.0
+servers:
+  - url: https://api.example.com/v1
+paths:
+  /stocks/{symbol}:
+    get:
+      summary: Get stock price by symbol
+      parameters:
+        - name: symbol
+          in: path
+          required: true
+          description: Stock symbol
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+            schema:
+            $ref: '#/components/schemas/StockQuote'
+    '404':
+      description: Stock symbol not found
+components:
+schemas:
+StockQuote:
+  type: object
+  properties:
+    symbol:
+      type: string
+    price:
+      type: number
+      format: float
+    timestamp:
+      type: string
+      format: date-time
+</code></pre>
+        </div>
+    </div>
+</section>
+
+<section id="contact" style="background-color: #f9f9f9;">
+    <div class="container">
+        <h2>Contact Us</h2>
+        <div class="contact-form">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Your name">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Your email address">
+            </div>
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" name="subject" placeholder="Subject">
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" placeholder="Your message"></textarea>
+            </div>
+            <button class="btn" id="submitBtn">Send Message</button>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2025 SOA & WS Standards Learning Center. All rights reserved.</p>
+        <p>Created for educational purposes only.</p>
+    </div>
+</footer>
+
+<a href="#" class="back-to-top">↑</a>
+
+<script>
+    $(document).ready(function() {
+        // Mobile menu toggle
+        $('.mobile-menu-toggle').click(function() {
+            $('.menu-items').toggleClass('active');
+        });
+        
+        // Smooth scrolling for navigation
+        $('a[href^="#"]').on('click', function(e) {
+            e.preventDefault();
+            var target = $(this.hash);
+            if (target.length) {
+                $('html, body').animate({
+                    scrollTop: target.offset().top - 70
+                }, 500);
+            }
+        });
+        
+        // Accordion functionality
+        $('.accordion-header').click(function() {
+            $(this).toggleClass('active');
+            $(this).next('.accordion-content').toggleClass('active');
+        });
+        
+        // Back to top button
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 300) {
+                $('.back-to-top').addClass('visible');
+            } else {
+                $('.back-to-top').removeClass('visible');
+            }
+        });
+        
+        $('.back-to-top').click(function(e) {
+            e.preventDefault();
+            $('html, body').animate({scrollTop: 0}, 500);
+        });
+        
+        // Form submission
+        $('#submitBtn').click(function() {
+            const name = $('#name').val();
+            const email = $('#email').val();
+            const subject = $('#subject').val();
+            const message = $('#message').val();
+            
+            if (!name || !email || !subject || !message) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            // This would normally submit to a server
+            alert('Form submitted successfully! (Note: This is a demo, no data was actually sent)');
+            
+            // Clear form
+            $('#name').val('');
+            $('#email').val('');
+            $('#subject').val('');
+            $('#message').val('');
+        });
+        
+        // Dark mode toggle
+        $('.theme-toggle').click(function() {
+            $('body').toggleClass('dark-mode');
+            if ($('body').hasClass('dark-mode')) {
+                $(this).text('Toggle Light Mode');
+            } else {
+                $(this).text('Toggle Dark Mode');
+            }
+        });
+        
+        // Highlight code blocks using Prism.js
+        Prism.highlightAll();
+    });
+</script>
